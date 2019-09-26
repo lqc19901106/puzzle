@@ -1,0 +1,27 @@
+{
+  "name": "puzzle",
+  "version": "1.0.0",
+  "description": "react component for tangram puzzle",
+  "main": "index.js",
+  "scripts": {
+    "test": "npm run test"
+  },
+  "keywords": [
+    "react",
+    "component",
+    "webpack",
+    "multiple",
+    "component"
+  ],
+  "author": "liuqichao",
+  "license": "MIT",
+  "dependencies": {
+    "react": "^16.9.0",
+    "react-dom": "^16.9.0",
+    "typescript": "^3.6.3",
+    "webpack": "^4.41.0"
+  },
+  "devDependencies": {
+    "lerna": "^3.16.4"
+  }
+}
