@@ -51,21 +51,5 @@ IF NOT EXISTS `p_menu`
     `author`,
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-CREATE TABLE
-IF NOT EXISTS `p_flow`
-(
-    `id` ,
-    `name`, 
-    `author`,
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
-CREATE TABLE
-IF NOT EXISTS `p_temp`
-(
-    `id` ,
-    `name`, 
-    `author`,
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
 
 
