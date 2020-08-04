@@ -1,10 +1,6 @@
-var express = require("express");
-var fs = require("fs");
-var router = express.Router();
+const fs = require("fs");
+const path = require("path");
 
-/* GET home page. */
-router.get("/", function (req, res, next) {
-  res.send();
-});
+console.log(__dirname, __filename);
 
-module.exports = router;
+module.exports = {};
