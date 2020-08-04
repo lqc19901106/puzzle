@@ -1,55 +1,52 @@
-CREATE DATABASE
-IF NOT EXISTS `puzzle` DEFAULT CHARSET `utf8` COLLATE `utf8_general_ci`;
+CREATE DATABASE IF NOT EXISTS cloud DEFAULT CHARSET utf8 COLLATE utf8_general_ci;
 
-USE `puzzle`;
+-- DROP DATABASE cloud; 删除数据库
+use cloud;
 
-CREATE TABLE
-IF NOT EXISTS `p_project`
-(
-    `id` ,
-    `name`, 
-    `author`,
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+CREATE TABLE IF NOT EXISTS `tbl_project`(
+    `id` INT UNSIGNED AUTO_INCREMENT,
+    `name` VARCHAR(100) NOT NULL COMMENT '项目名称',
+    `author` VARCHAR(40) NOT NULL,
+    `createtime` TIMESTAMP NOT,
+    PRIMARY KEY (`id`)
+) ENGINE = InnoDB DEFAULT CHARSET = utf8 COMMENT = '项目表';
 
-CREATE TABLE
-IF NOT EXISTS `p_project`
-(
-    `id` ,
-    `name`, 
-    `author`,
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+CREATE TABLE IF NOT EXISTS `tbl_entity`(
+    `id` INT UNSIGNED AUTO_INCREMENT,
+    `name` VARCHAR(100) NOT NULL COMMENT '实体对象名称',
+    `author` VARCHAR(40) NOT NULL,
+    `createtime` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY (`id`)
+) ENGINE = InnoDB DEFAULT CHARSET = utf8 COMMENT = '实体对象表';
 
-CREATE TABLE
-IF NOT EXISTS `p_component`
-(
-    `id` ,
-    `name`, 
-    `author`,
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+CREATE TABLE IF NOT EXISTS `tbl_field`(
+    `id` INT UNSIGNED AUTO_INCREMENT,
+    `name` VARCHAR(100) NOT NULL COMMENT = '字段名称',
+    `author` VARCHAR(40) NOT NULL,
+    `createtime` TIMESTAMP NOT,
+    PRIMARY KEY (`id`)
+) ENGINE = InnoDB DEFAULT CHARSET = utf8 COMMENT = '字段列表';
 
-CREATE TABLE
-IF NOT EXISTS `p_object`
-(
-    `id` ,
-    `name`, 
-    `author`,
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+CREATE TABLE IF NOT EXISTS `tbl_component`(
+    `id` INT UNSIGNED AUTO_INCREMENT,
+    `name` VARCHAR(100) NOT NULL,
+    `author` VARCHAR(40) NOT NULL,
+    `desc` `createtime` TIMESTAMP NOT,
+    PRIMARY KEY (`id`)
+) ENGINE = InnoDB DEFAULT CHARSET = utf8 COMMENT = '组件列表';
 
-CREATE TABLE
-IF NOT EXISTS `p_field`
-(
-    `id` ,
-    `name`, 
-    `author`,
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+CREATE TABLE IF NOT EXISTS `tbl_icon`(
+    `id` INT UNSIGNED AUTO_INCREMENT,
+    `name` VARCHAR(100) NOT NULL,
+    `author` VARCHAR(40) NOT NULL,
+    `createtime` TIMESTAMP NOT,
+    PRIMARY KEY (`id`)
+) ENGINE = InnoDB DEFAULT CHARSET = utf8 COMMENT = '图标列表';
 
-CREATE TABLE
-IF NOT EXISTS `p_menu`
-(
-    `id` ,
-    `name`, 
-    `author`,
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
-
-
+CREATE TABLE IF NOT EXISTS `tbl_version`(
+    `id` INT UNSIGNED AUTO_INCREMENT,
+    `name` VARCHAR(100) NOT NULL,
+    `author` VARCHAR(40) NOT NULL,
+    `createtime` TIMESTAMP NOT,
+    PRIMARY KEY (`id`)
+) ENGINE = InnoDB DEFAULT CHARSET = utf8 COMMENT = '版本列表';
