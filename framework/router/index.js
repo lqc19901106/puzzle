@@ -19,6 +19,7 @@ var methods = require("methods");
 var mixin = require("utils-merge");
 var debug = require("debug")("express:router");
 var deprecate = require("depd")("express");
+var flatten = require('array-flatten');
 var parseUrl = require("parseurl");
 var setPrototypeOf = require("setprototypeof");
 
@@ -453,7 +454,7 @@ proto.use = function use(fn) {
     }
   }
 
-  var callbacks = [...slice.call(arguments, offset)].flat();
+  var callbacks = flatten(slice.call(arguments, offset));
 
   if (callbacks.length === 0) {
     throw new TypeError("Router.use() requires a middleware function");

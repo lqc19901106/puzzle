@@ -8,6 +8,8 @@
 
 'use strict';
 
+//TODO view 去掉engine 全都按照html中的中的默认路径处理
+
 /**
  * Module dependencies.
  * @private

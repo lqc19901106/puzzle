@@ -6,30 +6,30 @@
  * MIT Licensed
  */
 
-"use strict";
+'use strict';
 
 /**
  * Module dependencies.
  * @private
  */
 
-var finalhandler = require("finalhandler");
-var Router = require("./router");
-var methods = require("methods");
-var middleware = require("./middleware/init");
-var query = require("./middleware/query");
-var debug = require("debug")("express:application");
-var View = require("./view");
-var http = require("http");
-var compileETag = require("./utils").compileETag;
-var compileQueryParser = require("./utils").compileQueryParser;
-var compileTrust = require("./utils").compileTrust;
-var deprecate = require("depd")("express");
-var flatten = require("array-flatten");
-var merge = require("utils-merge");
-var resolve = require("path").resolve;
-var setPrototypeOf = require("setprototypeof");
-const { flat } = require("methods");
+var finalhandler = require('finalhandler');
+var Router = require('./router');
+var methods = require('methods');
+var middleware = require('./middleware/init');
+var query = require('./middleware/query');
+var debug = require('debug')('express:application');
+var View = require('./view');
+var http = require('http');
+var compileETag = require('./utils').compileETag;
+var compileQueryParser = require('./utils').compileQueryParser;
+var compileTrust = require('./utils').compileTrust;
+var deprecate = require('depd')('express');
+var merge = require('utils-merge');
+var resolve = require('path').resolve;
+var setPrototypeOf = require('setprototypeof');
+var methods = require('methods');
+var flatten = require('array-flatten');
 var slice = Array.prototype.slice;
 
 /**
@@ -43,7 +43,7 @@ var app = (exports = module.exports = {});
  * @private
  */
 
-var trustProxyDefaultSymbol = "@@symbol:trust_proxy_default";
+var trustProxyDefaultSymbol = '@@symbol:trust_proxy_default';
 
 /**
  * Initialize the server.
@@ -69,15 +69,15 @@ app.init = function init() {
  */
 
 app.defaultConfiguration = function defaultConfiguration() {
-  var env = process.env.NODE_ENV || "development";
+  var env = process.env.NODE_ENV || 'development';
 
   // default settings
-  this.enable("x-powered-by");
-  this.set("etag", "weak");
-  this.set("env", env);
-  this.set("query parser", "extended");
-  this.set("subdomain offset", 2);
-  this.set("trust proxy", false);
+  this.enable('x-powered-by');
+  this.set('etag', 'weak');
+  this.set('env', env);
+  this.set('query parser', 'extended');
+  this.set('subdomain offset', 2);
+  this.set('trust proxy', false);
 
   // trust proxy inherit back-compat
   Object.defineProperty(this.settings, trustProxyDefaultSymbol, {
@@ -85,16 +85,16 @@ app.defaultConfiguration = function defaultConfiguration() {
     value: true,
   });
 
-  debug("booting in %s mode", env);
+  debug('booting in %s mode', env);
 
-  this.on("mount", function onmount(parent) {
+  this.on('mount', function onmount(parent) {
     // inherit trust proxy
     if (
       this.settings[trustProxyDefaultSymbol] === true &&
-      typeof parent.settings["trust proxy fn"] === "function"
+      typeof parent.settings['trust proxy fn'] === 'function'
     ) {
-      delete this.settings["trust proxy"];
-      delete this.settings["trust proxy fn"];
+      delete this.settings['trust proxy'];
+      delete this.settings['trust proxy fn'];
     }
 
     // inherit protos
@@ -108,21 +108,21 @@ app.defaultConfiguration = function defaultConfiguration() {
   this.locals = Object.create(null);
 
   // top-most app is mounted at /
-  this.mountpath = "/";
+  this.mountpath = '/';
 
   // default locals
   this.locals.settings = this.settings;
 
   // default configuration
-  this.set("view", View);
-  this.set("views", resolve("views"));
-  this.set("jsonp callback name", "callback");
+  this.set('view', View);
+  this.set('views', resolve('views'));
+  this.set('jsonp callback name', 'callback');
 
-  if (env === "production") {
-    this.enable("view cache");
+  if (env === 'production') {
+    this.enable('view cache');
   }
 
-  Object.defineProperty(this, "router", {
+  Object.defineProperty(this, 'router', {
     get: function () {
       throw new Error(
         "'app.router' is deprecated!\nPlease see the 3.x to 4.x migration guide for details on how to update your app."
@@ -142,11 +142,11 @@ app.defaultConfiguration = function defaultConfiguration() {
 app.lazyrouter = function lazyrouter() {
   if (!this._router) {
     this._router = new Router({
-      caseSensitive: this.enabled("case sensitive routing"),
-      strict: this.enabled("strict routing"),
+      caseSensitive: this.enabled('case sensitive routing'),
+      strict: this.enabled('strict routing'),
     });
 
-    this._router.use(query(this.get("query parser fn")));
+    this._router.use(query(this.get('query parser fn')));
     this._router.use(middleware.init(this));
   }
 };
@@ -167,13 +167,13 @@ app.handle = function handle(req, res, callback) {
   var done =
     callback ||
     finalhandler(req, res, {
-      env: this.get("env"),
+      env: this.get('env'),
       onerror: logerror.bind(this),
     });
 
   // no routes
   if (!router) {
-    debug("no routes defined on app");
+    debug('no routes defined on app');
     done();
     return;
   }
@@ -193,11 +193,11 @@ app.handle = function handle(req, res, callback) {
 
 app.use = function use(fn) {
   var offset = 0;
-  var path = "/";
+  var path = '/';
 
   // default path to '/'
   // disambiguate app.use([fn])
-  if (typeof fn !== "function") {
+  if (typeof fn !== 'function') {
     var arg = fn;
 
     while (Array.isArray(arg) && arg.length !== 0) {
@@ -205,16 +205,16 @@ app.use = function use(fn) {
     }
 
     // first arg is the path
-    if (typeof arg !== "function") {
+    if (typeof arg !== 'function') {
       offset = 1;
       path = fn;
     }
   }
 
-  var fns = [...slice.call(arguments, offset)].flat();
+  var fns = flatten(slice.call(arguments, offset));
 
   if (fns.length === 0) {
-    throw new TypeError("app.use() requires a middleware function");
+    throw new TypeError('app.use() requires a middleware function');
   }
 
   // setup router
@@ -227,7 +227,7 @@ app.use = function use(fn) {
       return router.use(path, fn);
     }
 
-    debug(".use app under %s", path);
+    debug('.use app under %s', path);
     fn.mountpath = path;
     fn.parent = this;
 
@@ -242,7 +242,7 @@ app.use = function use(fn) {
     });
 
     // mounted an app
-    fn.emit("mount", this);
+    fn.emit('mount', this);
   }, this);
 
   return this;
@@ -297,13 +297,13 @@ app.route = function route(path) {
  * @public
  */
 
-app.engine = function engine(ext, fn) {
-  if (typeof fn !== "function") {
-    throw new Error("callback function required");
+app. = function engine(ext, fn) {
+  if (typeof fn !== 'function') {
+    throw new Error('callback function required');
   }
 
   // get file extension
-  var extension = ext[0] !== "." ? "." + ext : ext;
+  var extension = ext[0] !== '.' ? '.' + ext : ext;
 
   // store engine
   this.engines[extension] = fn;
@@ -367,14 +367,14 @@ app.set = function set(setting, val) {
 
   // trigger matched settings
   switch (setting) {
-    case "etag":
-      this.set("etag fn", compileETag(val));
+    case 'etag':
+      this.set('etag fn', compileETag(val));
       break;
-    case "query parser":
-      this.set("query parser fn", compileQueryParser(val));
+    case 'query parser':
+      this.set('query parser fn', compileQueryParser(val));
       break;
-    case "trust proxy":
-      this.set("trust proxy fn", compileTrust(val));
+    case 'trust proxy':
+      this.set('trust proxy fn', compileTrust(val));
 
       // trust proxy inherit back-compat
       Object.defineProperty(this.settings, trustProxyDefaultSymbol, {
@@ -403,7 +403,7 @@ app.set = function set(setting, val) {
  */
 
 app.path = function path() {
-  return this.parent ? this.parent.path() + this.mountpath : "";
+  return this.parent ? this.parent.path() + this.mountpath : '';
 };
 
 /**
@@ -474,7 +474,7 @@ app.disable = function disable(setting) {
 
 methods.forEach(function (method) {
   app[method] = function (path) {
-    if (method === "get" && arguments.length === 1) {
+    if (method === 'get' && arguments.length === 1) {
       // app.get(setting)
       return this.set(path);
     }
@@ -512,7 +512,7 @@ app.all = function all(path) {
 
 // del -> delete alias
 
-app.del = deprecate.function(app.delete, "app.del: Use app.delete instead");
+app.del = deprecate.function(app.delete, 'app.del: Use app.delete instead');
 
 /**
  * Render the given view `name` name with `options`
@@ -540,7 +540,7 @@ app.render = function render(name, options, callback) {
   var view;
 
   // support callback function as second arg
-  if (typeof options === "function") {
+  if (typeof options === 'function') {
     done = options;
     opts = {};
   }
@@ -558,7 +558,7 @@ app.render = function render(name, options, callback) {
 
   // set .cache unless explicitly provided
   if (renderOptions.cache == null) {
-    renderOptions.cache = this.enabled("view cache");
+    renderOptions.cache = this.enabled('view cache');
   }
 
   // primed cache
@@ -568,11 +568,11 @@ app.render = function render(name, options, callback) {
 
   // view
   if (!view) {
-    var View = this.get("view");
+    var View = this.get('view');
 
     view = new View(name, {
-      defaultEngine: this.get("view engine"),
-      root: this.get("views"),
+      defaultEngine: this.get('view engine'),
+      root: this.get('views'),
       engines: engines,
     });
 
@@ -637,7 +637,7 @@ app.listen = function listen() {
 
 function logerror(err) {
   /* istanbul ignore next */
-  if (this.get("env") !== "test") console.error(err.stack || err.toString());
+  if (this.get('env') !== 'test') console.error(err.stack || err.toString());
 }
 
 /**
