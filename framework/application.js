@@ -297,7 +297,7 @@ app.route = function route(path) {
  * @public
  */
 
-app. = function engine(ext, fn) {
+app.engine = function engine(ext, fn) {
   if (typeof fn !== 'function') {
     throw new Error('callback function required');
   }
@@ -538,6 +538,7 @@ app.render = function render(name, options, callback) {
   var opts = options;
   var renderOptions = {};
   var view;
+  debugger;
 
   // support callback function as second arg
   if (typeof options === 'function') {
